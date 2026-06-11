@@ -1,0 +1,160 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Walermo\QrCode;
+
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\RoundBlockSizeMode;
+
+final class QrCodeOptions
+{
+    private int $size = 300;
+    private int $margin = 10;
+    private string $encoding = 'UTF-8';
+    private ErrorCorrectionLevel $errorCorrectionLevel = ErrorCorrectionLevel::High;
+    private RoundBlockSizeMode $roundBlockSizeMode = RoundBlockSizeMode::Margin;
+    private Color $foregroundColor;
+    private Color $backgroundColor;
+    private ?string $logoPath = null;
+    private int $logoResizeToWidth = 70;
+    private bool $logoPunchoutBackground = false;
+
+    public function __construct()
+    {
+        $this->foregroundColor = new Color(0, 0, 0);
+        $this->backgroundColor = new Color(255, 255, 255);
+    }
+
+    public function getSize(): int
+    {
+        return $this->size;
+    }
+
+    public function withSize(int $size): self
+    {
+        $clone = clone $this;
+        $clone->size = $size;
+
+        return $clone;
+    }
+
+    public function getMargin(): int
+    {
+        return $this->margin;
+    }
+
+    public function withMargin(int $margin): self
+    {
+        $clone = clone $this;
+        $clone->margin = $margin;
+
+        return $clone;
+    }
+
+    public function getEncoding(): Encoding
+    {
+        return new Encoding($this->encoding);
+    }
+
+    public function withEncoding(string $encoding): self
+    {
+        $clone = clone $this;
+        $clone->encoding = $encoding;
+
+        return $clone;
+    }
+
+    public function getErrorCorrectionLevel(): ErrorCorrectionLevel
+    {
+        return $this->errorCorrectionLevel;
+    }
+
+    public function withErrorCorrectionLevel(ErrorCorrectionLevel $errorCorrectionLevel): self
+    {
+        $clone = clone $this;
+        $clone->errorCorrectionLevel = $errorCorrectionLevel;
+
+        return $clone;
+    }
+
+    public function getRoundBlockSizeMode(): RoundBlockSizeMode
+    {
+        return $this->roundBlockSizeMode;
+    }
+
+    public function withRoundBlockSizeMode(RoundBlockSizeMode $roundBlockSizeMode): self
+    {
+        $clone = clone $this;
+        $clone->roundBlockSizeMode = $roundBlockSizeMode;
+
+        return $clone;
+    }
+
+    public function getForegroundColor(): Color
+    {
+        return $this->foregroundColor;
+    }
+
+    public function withForegroundColor(Color $foregroundColor): self
+    {
+        $clone = clone $this;
+        $clone->foregroundColor = $foregroundColor;
+
+        return $clone;
+    }
+
+    public function getBackgroundColor(): Color
+    {
+        return $this->backgroundColor;
+    }
+
+    public function withBackgroundColor(Color $backgroundColor): self
+    {
+        $clone = clone $this;
+        $clone->backgroundColor = $backgroundColor;
+
+        return $clone;
+    }
+
+    public function getLogoPath(): ?string
+    {
+        return $this->logoPath;
+    }
+
+    public function withLogoPath(?string $logoPath): self
+    {
+        $clone = clone $this;
+        $clone->logoPath = $logoPath !== null && $logoPath !== '' ? $logoPath : null;
+
+        return $clone;
+    }
+
+    public function getLogoResizeToWidth(): int
+    {
+        return $this->logoResizeToWidth;
+    }
+
+    public function withLogoResizeToWidth(int $logoResizeToWidth): self
+    {
+        $clone = clone $this;
+        $clone->logoResizeToWidth = $logoResizeToWidth;
+
+        return $clone;
+    }
+
+    public function shouldPunchoutLogoBackground(): bool
+    {
+        return $this->logoPunchoutBackground;
+    }
+
+    public function withLogoPunchoutBackground(bool $logoPunchoutBackground): self
+    {
+        $clone = clone $this;
+        $clone->logoPunchoutBackground = $logoPunchoutBackground;
+
+        return $clone;
+    }
+}

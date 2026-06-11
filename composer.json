@@ -1,0 +1,28 @@
+{
+    "name": "walermo/qr-code",
+    "description": "Standalone QR code generator package for reusable PHP projects.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "endroid/qr-code": "~6.0.0",
+        "khanamiryan/qrcode-detector-decoder": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Walermo\\QrCode\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Walermo\\QrCode\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
