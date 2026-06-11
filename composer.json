@@ -5,6 +5,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "bacon/bacon-qr-code": "^3.0",
         "endroid/qr-code": "~6.0.0",
         "khanamiryan/qrcode-detector-decoder": "^2.0"
     },

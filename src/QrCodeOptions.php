@@ -21,6 +21,10 @@ final class QrCodeOptions
     private ?string $logoPath = null;
     private int $logoResizeToWidth = 70;
     private bool $logoPunchoutBackground = false;
+    private ModuleShape $moduleShape = ModuleShape::Square;
+    private EyeShape $eyeShape = EyeShape::Square;
+    private ?Color $eyeOuterColor = null;
+    private ?Color $eyeInnerColor = null;
 
     public function __construct()
     {
@@ -65,6 +69,11 @@ final class QrCodeOptions
     public function getEncoding(): Encoding
     {
         return new Encoding($this->encoding);
+    }
+
+    public function getEncodingValue(): string
+    {
+        return $this->encoding;
     }
 
     public function withEncoding(string $encoding): self
@@ -170,6 +179,58 @@ final class QrCodeOptions
     {
         $clone = clone $this;
         $clone->logoPunchoutBackground = $logoPunchoutBackground;
+
+        return $clone;
+    }
+
+    public function getModuleShape(): ModuleShape
+    {
+        return $this->moduleShape;
+    }
+
+    public function withModuleShape(ModuleShape $moduleShape): self
+    {
+        $clone = clone $this;
+        $clone->moduleShape = $moduleShape;
+
+        return $clone;
+    }
+
+    public function getEyeShape(): EyeShape
+    {
+        return $this->eyeShape;
+    }
+
+    public function withEyeShape(EyeShape $eyeShape): self
+    {
+        $clone = clone $this;
+        $clone->eyeShape = $eyeShape;
+
+        return $clone;
+    }
+
+    public function getEyeOuterColor(): ?Color
+    {
+        return $this->eyeOuterColor;
+    }
+
+    public function withEyeOuterColor(?Color $eyeOuterColor): self
+    {
+        $clone = clone $this;
+        $clone->eyeOuterColor = $eyeOuterColor;
+
+        return $clone;
+    }
+
+    public function getEyeInnerColor(): ?Color
+    {
+        return $this->eyeInnerColor;
+    }
+
+    public function withEyeInnerColor(?Color $eyeInnerColor): self
+    {
+        $clone = clone $this;
+        $clone->eyeInnerColor = $eyeInnerColor;
 
         return $clone;
     }

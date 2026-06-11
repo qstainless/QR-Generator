@@ -1,6 +1,6 @@
 # Walermo QR Code
 
-A package-first QR code generator for personal PHP projects.
+A package-first QR code generator for personal PHP projects, with a gradual shift toward Bacon-backed styling controls.
 
 ## Goals
 
@@ -15,6 +15,8 @@ composer install
 ```
 
 ## Usage
+
+### Standard PNG
 
 ```php
 <?php
@@ -36,6 +38,41 @@ $generator = new QrCodeGenerator();
 $result = $generator->generate('https://example.com', $options);
 $result->saveToFile(__DIR__ . '/qr.png');
 ```
+
+### Styled SVG
+
+```php
+<?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Endroid\QrCode\Color\Color;
+use Walermo\QrCode\EyeShape;
+use Walermo\QrCode\ModuleShape;
+use Walermo\QrCode\QrCodeGenerator;
+use Walermo\QrCode\QrCodeOptions;
+
+$options = (new QrCodeOptions())
+    ->withSize(320)
+    ->withModuleShape(ModuleShape::Dots)
+    ->withEyeShape(EyeShape::Circle)
+    ->withEyeOuterColor(new Color(255, 0, 0))
+    ->withEyeInnerColor(new Color(0, 128, 255));
+
+$generator = new QrCodeGenerator();
+$svg = $generator->generateStyledSvg('https://example.com', $options);
+
+file_put_contents(__DIR__ . '/qr-styled.svg', $svg);
+```
+
+Current styled options:
+
+- `withModuleShape()`: `Square`, `Dots`, `Round`
+- `withEyeShape()`: `Square`, `Pointy`, `Circle`
+- `withEyeOuterColor()`: set a separate outer anchor color
+- `withEyeInnerColor()`: set a separate inner anchor color
 
 ## Demo
 
