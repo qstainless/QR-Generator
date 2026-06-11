@@ -18,7 +18,7 @@
 
 body {
     margin: 0;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     background:
         radial-gradient(circle at top right, rgba(19, 111, 99, 0.12), transparent 30%),
         linear-gradient(180deg, #f8f5ef 0%, var(--bg) 100%);
@@ -78,7 +78,7 @@ form {
 
 .tablist {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 10px;
     padding: 6px;
     border: 1px solid var(--line);
@@ -130,12 +130,14 @@ label {
 }
 
 input,
+select,
 textarea,
 button {
     font: inherit;
 }
 
 input,
+select,
 textarea {
     width: 100%;
     border: 1px solid var(--line);
@@ -255,6 +257,29 @@ button.primary {
 .analysis-band {
     display: grid;
     gap: 14px;
+}
+
+fieldset {
+    margin: 0;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    min-width: 0;
+}
+
+legend {
+    padding: 0 6px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.eye-color-grid {
+    display: grid;
+    gap: 14px;
+}
+
+.eye-color-fieldset {
+    background: rgba(255, 255, 255, 0.66);
 }
 
 code {

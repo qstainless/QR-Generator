@@ -4,6 +4,8 @@ const tabs = Array.from(document.querySelectorAll('.tab'));
 const panels = Array.from(document.querySelectorAll('.tab-panel'));
 const sizeInput = document.getElementById('size');
 const logoWidthInput = document.getElementById('logo_width');
+const logoXInput = document.getElementById('logo_x');
+const logoYInput = document.getElementById('logo_y');
 const analysisMessage = document.getElementById('analysis-message');
 const layoutStatus = document.getElementById('layout-status');
 const layoutConstraints = document.getElementById('layout-constraints');
@@ -35,6 +37,51 @@ tabs.forEach((tab) => {
 function scheduleAnalysis() {
     window.clearTimeout(debounceTimer);
     debounceTimer = window.setTimeout(runAnalysis, 350);
+}
+
+function clampLogoPositionFields() {
+    if (!logoXInput || !logoYInput) {
+        return;
+    }
+
+    if (logoXInput.value === '' || logoYInput.value === '') {
+        return;
+    }
+
+    const qrSize = Number(sizeInput.value);
+    const logoSize = Number(logoWidthInput.value);
+    const moduleCount = Number(metricModules.textContent);
+
+    if (!Number.isFinite(qrSize) || !Number.isFinite(logoSize) || !Number.isFinite(moduleCount) || moduleCount <= 0) {
+        return;
+    }
+
+    const maxOrigin = Math.max(0, qrSize - logoSize);
+    const exclusion = Math.ceil((7 * (qrSize / moduleCount)) + 10);
+    const bottomOverlapStart = qrSize - exclusion - logoSize;
+    const safeMiddleStart = Math.min(maxOrigin, Math.max(0, exclusion));
+    const safeMiddleEnd = Math.max(safeMiddleStart, Math.min(maxOrigin, bottomOverlapStart));
+
+    let x = Math.min(Math.max(Number(logoXInput.value), 0), maxOrigin);
+    let y = Math.min(Math.max(Number(logoYInput.value), 0), maxOrigin);
+
+    if (y < exclusion) {
+        const minX = exclusion;
+        const maxX = qrSize - exclusion - logoSize;
+
+        if (minX > maxX) {
+            y = safeMiddleStart;
+            x = Math.min(Math.max(x, 0), maxOrigin);
+        } else {
+            x = Math.min(Math.max(x, minX), maxX);
+        }
+    } else if (y > bottomOverlapStart) {
+        y = Math.max(safeMiddleEnd, Math.min(y, maxOrigin));
+        x = Math.min(Math.max(x, exclusion), maxOrigin);
+    }
+
+    logoXInput.value = String(Math.round(x));
+    logoYInput.value = String(Math.round(y));
 }
 
 async function runAnalysis() {
@@ -94,6 +141,8 @@ async function runAnalysis() {
                 logoWidthInput.value = String(result.logo.maximum_width);
             }
         }
+
+        clampLogoPositionFields();
     } catch (error) {
         if (error.name === 'AbortError') {
             return;
@@ -106,4 +155,8 @@ async function runAnalysis() {
 
 form.addEventListener('input', scheduleAnalysis);
 form.addEventListener('change', scheduleAnalysis);
+logoXInput?.addEventListener('input', clampLogoPositionFields);
+logoYInput?.addEventListener('input', clampLogoPositionFields);
+logoWidthInput?.addEventListener('input', clampLogoPositionFields);
+sizeInput?.addEventListener('input', clampLogoPositionFields);
 runAnalysis();

@@ -44,6 +44,10 @@
                         Colors
                         <span>Foreground and background</span>
                     </button>
+                    <button class="tab <?= $form['active_tab'] === 'style' ? 'active' : '' ?>" type="button" data-tab="style">
+                        Style
+                        <span>Module and eye shapes</span>
+                    </button>
                 </div>
 
                 <section class="tab-panel <?= $form['active_tab'] === 'content' ? 'active' : '' ?>" data-panel="content">
@@ -84,11 +88,21 @@
                             <input type="text" value="<?= $form['logo_punchout'] === '1' ? 'Enabled' : 'Disabled' ?>" readonly>
                         </label>
                     </div>
+                    <div class="grid">
+                        <label>
+                            Logo X
+                            <input type="number" name="logo_x" id="logo_x" min="0" step="1" placeholder="Center" value="<?= htmlspecialchars($form['logo_x'], ENT_QUOTES, 'UTF-8') ?>">
+                        </label>
+                        <label>
+                            Logo Y
+                            <input type="number" name="logo_y" id="logo_y" min="0" step="1" placeholder="Center" value="<?= htmlspecialchars($form['logo_y'], ENT_QUOTES, 'UTF-8') ?>">
+                        </label>
+                    </div>
                     <label class="pill">
                         <input type="checkbox" name="logo_punchout" value="1" <?= $form['logo_punchout'] === '1' ? 'checked' : '' ?>>
                         Punch out logo background
                     </label>
-                    <p class="hint">The logo tab measures the current payload against the validator and caps the width to the largest passing square at the center.</p>
+                    <p class="hint">Leave X and Y blank to keep the logo centered. When set, the styled renderer clamps the logo away from the three finder eyes with 10 px of padding.</p>
                 </section>
 
                 <section class="tab-panel <?= $form['active_tab'] === 'colors' ? 'active' : '' ?>" data-panel="colors">
@@ -102,7 +116,80 @@
                             <input type="color" name="background" id="background" value="<?= htmlspecialchars($form['background'], ENT_QUOTES, 'UTF-8') ?>">
                         </label>
                     </div>
-                    <p class="hint">Style tabs for anchors and module shapes are next once the structural guardrails feel right.</p>
+                    <div class="grid">
+                        <label>
+                            Eye outer color
+                            <input type="text" name="eye_outer" id="eye_outer" placeholder="#000000" value="<?= htmlspecialchars($form['eye_outer'], ENT_QUOTES, 'UTF-8') ?>">
+                        </label>
+                        <label>
+                            Eye inner color
+                            <input type="text" name="eye_inner" id="eye_inner" placeholder="#000000" value="<?= htmlspecialchars($form['eye_inner'], ENT_QUOTES, 'UTF-8') ?>">
+                        </label>
+                    </div>
+                    <div class="eye-color-grid">
+                        <fieldset class="eye-color-fieldset">
+                            <legend>Top-left eye override</legend>
+                            <div class="grid">
+                                <label>
+                                    Outer
+                                    <input type="text" name="top_left_eye_outer" id="top_left_eye_outer" placeholder="Use global eye outer" value="<?= htmlspecialchars($form['top_left_eye_outer'], ENT_QUOTES, 'UTF-8') ?>">
+                                </label>
+                                <label>
+                                    Inner
+                                    <input type="text" name="top_left_eye_inner" id="top_left_eye_inner" placeholder="Use global eye inner" value="<?= htmlspecialchars($form['top_left_eye_inner'], ENT_QUOTES, 'UTF-8') ?>">
+                                </label>
+                            </div>
+                        </fieldset>
+                        <fieldset class="eye-color-fieldset">
+                            <legend>Top-right eye override</legend>
+                            <div class="grid">
+                                <label>
+                                    Outer
+                                    <input type="text" name="top_right_eye_outer" id="top_right_eye_outer" placeholder="Use global eye outer" value="<?= htmlspecialchars($form['top_right_eye_outer'], ENT_QUOTES, 'UTF-8') ?>">
+                                </label>
+                                <label>
+                                    Inner
+                                    <input type="text" name="top_right_eye_inner" id="top_right_eye_inner" placeholder="Use global eye inner" value="<?= htmlspecialchars($form['top_right_eye_inner'], ENT_QUOTES, 'UTF-8') ?>">
+                                </label>
+                            </div>
+                        </fieldset>
+                        <fieldset class="eye-color-fieldset">
+                            <legend>Bottom-left eye override</legend>
+                            <div class="grid">
+                                <label>
+                                    Outer
+                                    <input type="text" name="bottom_left_eye_outer" id="bottom_left_eye_outer" placeholder="Use global eye outer" value="<?= htmlspecialchars($form['bottom_left_eye_outer'], ENT_QUOTES, 'UTF-8') ?>">
+                                </label>
+                                <label>
+                                    Inner
+                                    <input type="text" name="bottom_left_eye_inner" id="bottom_left_eye_inner" placeholder="Use global eye inner" value="<?= htmlspecialchars($form['bottom_left_eye_inner'], ENT_QUOTES, 'UTF-8') ?>">
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <p class="hint">Leave eye color fields blank to inherit the main QR foreground color. Any eye-specific color override switches the preview to the styled SVG renderer.</p>
+                </section>
+
+                <section class="tab-panel <?= $form['active_tab'] === 'style' ? 'active' : '' ?>" data-panel="style">
+                    <div class="grid">
+                        <label>
+                            Module shape
+                            <select name="module_shape" id="module_shape">
+                                <option value="square" <?= $form['module_shape'] === 'square' ? 'selected' : '' ?>>Square</option>
+                                <option value="dots" <?= $form['module_shape'] === 'dots' ? 'selected' : '' ?>>Dots</option>
+                                <option value="round" <?= $form['module_shape'] === 'round' ? 'selected' : '' ?>>Rounded</option>
+                            </select>
+                        </label>
+                        <label>
+                            Eye shape
+                            <select name="eye_shape" id="eye_shape">
+                                <option value="square" <?= $form['eye_shape'] === 'square' ? 'selected' : '' ?>>Square</option>
+                                <option value="pointy" <?= $form['eye_shape'] === 'pointy' ? 'selected' : '' ?>>Pointy</option>
+                                <option value="circle" <?= $form['eye_shape'] === 'circle' ? 'selected' : '' ?>>Circle</option>
+                            </select>
+                        </label>
+                    </div>
+                    <p class="hint">Non-square styling switches the preview to the Bacon-backed SVG renderer so the shapes are visible.</p>
                 </section>
 
                 <div class="actions">
