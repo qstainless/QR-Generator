@@ -39,7 +39,13 @@ $result->saveToFile(__DIR__ . '/qr.png');
 
 ## Demo
 
-After installing dependencies, open [http://qrgenerator.test](http://qrgenerator.test) to use the browser demo in `public/index.php`.
+After installing dependencies, open [http://qrgenerator.test](http://qrgenerator.test) to use the browser demo in `public/index.php`. The demo is a local playground only and is excluded from Composer package archives.
+
+## Tests
+
+```bash
+composer test
+```
 
 ## Structure
 

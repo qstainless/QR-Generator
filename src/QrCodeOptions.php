@@ -35,6 +35,10 @@ final class QrCodeOptions
 
     public function withSize(int $size): self
     {
+        if ($size < 1) {
+            throw new \InvalidArgumentException('QR code size must be greater than zero.');
+        }
+
         $clone = clone $this;
         $clone->size = $size;
 
@@ -48,6 +52,10 @@ final class QrCodeOptions
 
     public function withMargin(int $margin): self
     {
+        if ($margin < 0) {
+            throw new \InvalidArgumentException('QR code margin cannot be negative.');
+        }
+
         $clone = clone $this;
         $clone->margin = $margin;
 
@@ -61,6 +69,10 @@ final class QrCodeOptions
 
     public function withEncoding(string $encoding): self
     {
+        if (trim($encoding) === '') {
+            throw new \InvalidArgumentException('QR code encoding cannot be empty.');
+        }
+
         $clone = clone $this;
         $clone->encoding = $encoding;
 
@@ -139,6 +151,10 @@ final class QrCodeOptions
 
     public function withLogoResizeToWidth(int $logoResizeToWidth): self
     {
+        if ($logoResizeToWidth < 1) {
+            throw new \InvalidArgumentException('Logo resize width must be greater than zero.');
+        }
+
         $clone = clone $this;
         $clone->logoResizeToWidth = $logoResizeToWidth;
 

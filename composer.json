@@ -21,6 +21,16 @@
             "Walermo\\QrCode\\Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "test": "phpunit --do-not-cache-result tests"
+    },
+    "archive": {
+        "exclude": [
+            "/.idea",
+            "/public",
+            "/tests"
+        ]
+    },
     "config": {
         "optimize-autoloader": true,
         "sort-packages": true
