@@ -11,28 +11,28 @@ use Endroid\QrCode\RoundBlockSizeMode;
 
 final class QrCodeOptions
 {
-    private int $size = 300;
-    private int $margin = 10;
-    private string $encoding = 'UTF-8';
-    private ErrorCorrectionLevel $errorCorrectionLevel = ErrorCorrectionLevel::High;
-    private RoundBlockSizeMode $roundBlockSizeMode = RoundBlockSizeMode::Margin;
-    private Color $foregroundColor;
-    private Color $backgroundColor;
-    private ?string $logoPath = null;
-    private int $logoResizeToWidth = 70;
-    private bool $logoPunchoutBackground = false;
-    private ?int $logoX = null;
-    private ?int $logoY = null;
-    private ModuleShape $moduleShape = ModuleShape::Square;
-    private EyeShape $eyeShape = EyeShape::Square;
-    private ?Color $eyeOuterColor = null;
-    private ?Color $eyeInnerColor = null;
-    private ?Color $topLeftEyeOuterColor = null;
-    private ?Color $topLeftEyeInnerColor = null;
-    private ?Color $topRightEyeOuterColor = null;
-    private ?Color $topRightEyeInnerColor = null;
-    private ?Color $bottomLeftEyeOuterColor = null;
-    private ?Color $bottomLeftEyeInnerColor = null;
+    private int                  $size                    = 300;
+    private int                  $margin                  = 10;
+    private string               $encoding                = 'UTF-8';
+    private ErrorCorrectionLevel $errorCorrectionLevel    = ErrorCorrectionLevel::High;
+    private RoundBlockSizeMode   $roundBlockSizeMode      = RoundBlockSizeMode::Margin;
+    private Color                $foregroundColor;
+    private Color                $backgroundColor;
+    private ?string              $logoPath                = null;
+    private int                  $logoResizeToWidth       = 70;
+    private bool                 $logoPunchoutBackground  = false;
+    private ?int                 $logoX                   = null;
+    private ?int                 $logoY                   = null;
+    private ModuleShape          $moduleShape             = ModuleShape::Square;
+    private EyeShape             $eyeShape                = EyeShape::Square;
+    private ?Color               $eyeOuterColor           = null;
+    private ?Color               $eyeInnerColor           = null;
+    private ?Color               $topLeftEyeOuterColor    = null;
+    private ?Color               $topLeftEyeInnerColor    = null;
+    private ?Color               $topRightEyeOuterColor   = null;
+    private ?Color               $topRightEyeInnerColor   = null;
+    private ?Color               $bottomLeftEyeOuterColor = null;
+    private ?Color               $bottomLeftEyeInnerColor = null;
 
     public function __construct()
     {
@@ -51,7 +51,7 @@ final class QrCodeOptions
             throw new \InvalidArgumentException('QR code size must be greater than zero.');
         }
 
-        $clone = clone $this;
+        $clone       = clone $this;
         $clone->size = $size;
 
         return $clone;
@@ -68,7 +68,7 @@ final class QrCodeOptions
             throw new \InvalidArgumentException('QR code margin cannot be negative.');
         }
 
-        $clone = clone $this;
+        $clone         = clone $this;
         $clone->margin = $margin;
 
         return $clone;
@@ -90,7 +90,7 @@ final class QrCodeOptions
             throw new \InvalidArgumentException('QR code encoding cannot be empty.');
         }
 
-        $clone = clone $this;
+        $clone           = clone $this;
         $clone->encoding = $encoding;
 
         return $clone;
@@ -103,7 +103,7 @@ final class QrCodeOptions
 
     public function withErrorCorrectionLevel(ErrorCorrectionLevel $errorCorrectionLevel): self
     {
-        $clone = clone $this;
+        $clone                       = clone $this;
         $clone->errorCorrectionLevel = $errorCorrectionLevel;
 
         return $clone;
@@ -116,7 +116,7 @@ final class QrCodeOptions
 
     public function withRoundBlockSizeMode(RoundBlockSizeMode $roundBlockSizeMode): self
     {
-        $clone = clone $this;
+        $clone                     = clone $this;
         $clone->roundBlockSizeMode = $roundBlockSizeMode;
 
         return $clone;
@@ -129,7 +129,7 @@ final class QrCodeOptions
 
     public function withForegroundColor(Color $foregroundColor): self
     {
-        $clone = clone $this;
+        $clone                  = clone $this;
         $clone->foregroundColor = $foregroundColor;
 
         return $clone;
@@ -142,7 +142,7 @@ final class QrCodeOptions
 
     public function withBackgroundColor(Color $backgroundColor): self
     {
-        $clone = clone $this;
+        $clone                  = clone $this;
         $clone->backgroundColor = $backgroundColor;
 
         return $clone;
@@ -155,7 +155,7 @@ final class QrCodeOptions
 
     public function withLogoPath(?string $logoPath): self
     {
-        $clone = clone $this;
+        $clone           = clone $this;
         $clone->logoPath = $logoPath !== null && $logoPath !== '' ? $logoPath : null;
 
         return $clone;
@@ -172,7 +172,7 @@ final class QrCodeOptions
             throw new \InvalidArgumentException('Logo resize width must be greater than zero.');
         }
 
-        $clone = clone $this;
+        $clone                    = clone $this;
         $clone->logoResizeToWidth = $logoResizeToWidth;
 
         return $clone;
@@ -185,7 +185,7 @@ final class QrCodeOptions
 
     public function withLogoPunchoutBackground(bool $logoPunchoutBackground): self
     {
-        $clone = clone $this;
+        $clone                         = clone $this;
         $clone->logoPunchoutBackground = $logoPunchoutBackground;
 
         return $clone;
@@ -220,7 +220,7 @@ final class QrCodeOptions
             throw new \InvalidArgumentException('Logo Y position cannot be negative.');
         }
 
-        $clone = clone $this;
+        $clone        = clone $this;
         $clone->logoX = $logoX;
         $clone->logoY = $logoY;
 
@@ -234,7 +234,7 @@ final class QrCodeOptions
 
     public function withModuleShape(ModuleShape $moduleShape): self
     {
-        $clone = clone $this;
+        $clone              = clone $this;
         $clone->moduleShape = $moduleShape;
 
         return $clone;
@@ -247,7 +247,7 @@ final class QrCodeOptions
 
     public function withEyeShape(EyeShape $eyeShape): self
     {
-        $clone = clone $this;
+        $clone           = clone $this;
         $clone->eyeShape = $eyeShape;
 
         return $clone;
@@ -260,7 +260,7 @@ final class QrCodeOptions
 
     public function withEyeOuterColor(?Color $eyeOuterColor): self
     {
-        $clone = clone $this;
+        $clone                = clone $this;
         $clone->eyeOuterColor = $eyeOuterColor;
 
         return $clone;
@@ -273,7 +273,7 @@ final class QrCodeOptions
 
     public function withEyeInnerColor(?Color $eyeInnerColor): self
     {
-        $clone = clone $this;
+        $clone                = clone $this;
         $clone->eyeInnerColor = $eyeInnerColor;
 
         return $clone;
@@ -286,7 +286,7 @@ final class QrCodeOptions
 
     public function withTopLeftEyeOuterColor(?Color $topLeftEyeOuterColor): self
     {
-        $clone = clone $this;
+        $clone                       = clone $this;
         $clone->topLeftEyeOuterColor = $topLeftEyeOuterColor;
 
         return $clone;
@@ -299,7 +299,7 @@ final class QrCodeOptions
 
     public function withTopLeftEyeInnerColor(?Color $topLeftEyeInnerColor): self
     {
-        $clone = clone $this;
+        $clone                       = clone $this;
         $clone->topLeftEyeInnerColor = $topLeftEyeInnerColor;
 
         return $clone;
@@ -312,7 +312,7 @@ final class QrCodeOptions
 
     public function withTopRightEyeOuterColor(?Color $topRightEyeOuterColor): self
     {
-        $clone = clone $this;
+        $clone                        = clone $this;
         $clone->topRightEyeOuterColor = $topRightEyeOuterColor;
 
         return $clone;
@@ -325,7 +325,7 @@ final class QrCodeOptions
 
     public function withTopRightEyeInnerColor(?Color $topRightEyeInnerColor): self
     {
-        $clone = clone $this;
+        $clone                        = clone $this;
         $clone->topRightEyeInnerColor = $topRightEyeInnerColor;
 
         return $clone;
@@ -338,7 +338,7 @@ final class QrCodeOptions
 
     public function withBottomLeftEyeOuterColor(?Color $bottomLeftEyeOuterColor): self
     {
-        $clone = clone $this;
+        $clone                          = clone $this;
         $clone->bottomLeftEyeOuterColor = $bottomLeftEyeOuterColor;
 
         return $clone;
@@ -351,7 +351,7 @@ final class QrCodeOptions
 
     public function withBottomLeftEyeInnerColor(?Color $bottomLeftEyeInnerColor): self
     {
-        $clone = clone $this;
+        $clone                          = clone $this;
         $clone->bottomLeftEyeInnerColor = $bottomLeftEyeInnerColor;
 
         return $clone;

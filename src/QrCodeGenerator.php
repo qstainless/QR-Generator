@@ -40,14 +40,14 @@ final class QrCodeGenerator
         $options ??= new QrCodeOptions();
 
         $qrCode = new QrCode(
-            data: $data,
-            encoding: $options->getEncoding(),
+            data:                 $data,
+            encoding:             $options->getEncoding(),
             errorCorrectionLevel: $options->getErrorCorrectionLevel(),
-            size: $options->getSize(),
-            margin: $options->getMargin(),
-            roundBlockSizeMode: $options->getRoundBlockSizeMode(),
-            foregroundColor: $options->getForegroundColor(),
-            backgroundColor: $options->getBackgroundColor()
+            size:                 $options->getSize(),
+            margin:               $options->getMargin(),
+            roundBlockSizeMode:   $options->getRoundBlockSizeMode(),
+            foregroundColor:      $options->getForegroundColor(),
+            backgroundColor:      $options->getBackgroundColor()
         );
 
         return $this->createQrWithLogo($qrCode, $data, $options);
@@ -59,11 +59,11 @@ final class QrCodeGenerator
     public function createQrWithLogo(QrCode $qrCode, string $data, ?QrCodeOptions $options = null): ResultInterface
     {
         $options ??= new QrCodeOptions();
-        $writer = new PngWriter();
+        $writer  = new PngWriter();
 
         try {
             $logoPath = $options->getLogoPath();
-            $result = $logoPath !== null
+            $result   = $logoPath !== null
                 ? $writer->write($qrCode, $this->createLogo($options))
                 : $writer->write($qrCode);
 
@@ -112,8 +112,8 @@ final class QrCodeGenerator
     public function createLogo(QrCodeOptions $options): Logo
     {
         return new Logo(
-            path: (string) $options->getLogoPath(),
-            resizeToWidth: $options->getLogoResizeToWidth(),
+            path:               (string) $options->getLogoPath(),
+            resizeToWidth:      $options->getLogoResizeToWidth(),
             punchoutBackground: $options->shouldPunchoutLogoBackground()
         );
     }
@@ -132,8 +132,8 @@ final class QrCodeGenerator
     private function createModule(QrCodeOptions $options): ModuleInterface
     {
         return match ($options->getModuleShape()) {
-            ModuleShape::Dots => new DotsModule(DotsModule::MEDIUM),
-            ModuleShape::Round => new RoundnessModule(RoundnessModule::MEDIUM),
+            ModuleShape::Dots   => new DotsModule(DotsModule::MEDIUM),
+            ModuleShape::Round  => new RoundnessModule(RoundnessModule::MEDIUM),
             ModuleShape::Square => SquareModule::instance(),
         };
     }
@@ -181,10 +181,10 @@ final class QrCodeGenerator
     private function convertErrorCorrectionLevel(ErrorCorrectionLevel $errorCorrectionLevel): BaconErrorCorrectionLevel
     {
         return match ($errorCorrectionLevel) {
-            ErrorCorrectionLevel::Low => BaconErrorCorrectionLevel::L(),
-            ErrorCorrectionLevel::Medium => BaconErrorCorrectionLevel::M(),
+            ErrorCorrectionLevel::Low      => BaconErrorCorrectionLevel::L(),
+            ErrorCorrectionLevel::Medium   => BaconErrorCorrectionLevel::M(),
             ErrorCorrectionLevel::Quartile => BaconErrorCorrectionLevel::Q(),
-            ErrorCorrectionLevel::High => BaconErrorCorrectionLevel::H(),
+            ErrorCorrectionLevel::High     => BaconErrorCorrectionLevel::H(),
         };
     }
 
@@ -219,8 +219,8 @@ final class QrCodeGenerator
             return $svg;
         }
 
-        $targetWidth = $options->getLogoResizeToWidth();
-        $aspectRatio = $imageSize[1] / $imageSize[0];
+        $targetWidth  = $options->getLogoResizeToWidth();
+        $aspectRatio  = $imageSize[1] / $imageSize[0];
         $targetHeight = max(1, (int) round($targetWidth * $aspectRatio));
         if ($options->hasCustomLogoPosition()) {
             $x = (int) $options->getLogoX();
@@ -272,15 +272,15 @@ final class QrCodeGenerator
             $options->getEncodingValue()
         )->getVersion()->getDimensionForVersion();
 
-        $size = $options->getSize();
-        $logoSize = $options->getLogoResizeToWidth();
-        $maxOrigin = max(0, $size - $logoSize);
-        $x = min(max(0, (int) $options->getLogoX()), $maxOrigin);
-        $y = min(max(0, (int) $options->getLogoY()), $maxOrigin);
-        $exclusion = (int) ceil((7 * ($size / $moduleCount)) + 10);
+        $size               = $options->getSize();
+        $logoSize           = $options->getLogoResizeToWidth();
+        $maxOrigin          = max(0, $size - $logoSize);
+        $x                  = min(max(0, (int) $options->getLogoX()), $maxOrigin);
+        $y                  = min(max(0, (int) $options->getLogoY()), $maxOrigin);
+        $exclusion          = (int) ceil((7 * ($size / $moduleCount)) + 10);
         $bottomOverlapStart = $size - $exclusion - $logoSize;
-        $safeMiddleStart = min($maxOrigin, max(0, $exclusion));
-        $safeMiddleEnd = max($safeMiddleStart, min($maxOrigin, $bottomOverlapStart));
+        $safeMiddleStart    = min($maxOrigin, max(0, $exclusion));
+        $safeMiddleEnd      = max($safeMiddleStart, min($maxOrigin, $bottomOverlapStart));
 
         if ($y < $exclusion) {
             $y = min($y, max(0, $exclusion - 1));

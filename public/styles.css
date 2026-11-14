@@ -254,6 +254,35 @@ button.primary {
     gap: 14px;
 }
 
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+button.secondary {
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    padding: 13px 18px;
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--accent-strong);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+}
+
+button.secondary:hover {
+    background: var(--accent-soft);
+    box-shadow: 0 5px 14px rgba(19, 111, 99, 0.12);
+    transform: translateY(-1px);
+}
+
+button.primary:focus-visible,
+button.secondary:focus-visible {
+    outline: 3px solid rgba(19, 111, 99, 0.3);
+    outline-offset: 3px;
+}
+
 .analysis-band {
     display: grid;
     gap: 14px;

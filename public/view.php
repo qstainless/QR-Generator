@@ -194,7 +194,13 @@
 
                 <div class="actions">
                     <p class="meta">Package entry points stay the same for now: <code>QrCodeGenerator::generate()</code> and <code>QrCodeOptions</code>.</p>
-                    <button class="primary" type="submit">Generate QR code</button>
+                    <div class="action-buttons">
+                        <button class="primary" type="submit">Generate QR Code</button>
+                        <?php if ($downloadFiles !== null): ?>
+                            <button class="secondary" type="button" id="save-qr" data-svg="<?= htmlspecialchars($downloadFiles['svg'], ENT_QUOTES, 'UTF-8') ?>">Save Generated QR Code</button>
+                        <?php endif; ?>
+                    </div>
+                    <p class="meta" id="save-status" role="status" aria-live="polite" hidden></p>
                 </div>
             </form>
         </div>

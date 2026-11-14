@@ -14,6 +14,8 @@ const metricVersion = document.getElementById('metric-version');
 const metricModules = document.getElementById('metric-modules');
 const metricPpm = document.getElementById('metric-ppm');
 const metricLogoMax = document.getElementById('metric-logo-max');
+const saveButton = document.getElementById('save-qr');
+const saveStatus = document.getElementById('save-status');
 
 let debounceTimer = null;
 let currentController = null;
@@ -155,8 +157,114 @@ async function runAnalysis() {
 
 form.addEventListener('input', scheduleAnalysis);
 form.addEventListener('change', scheduleAnalysis);
+form.addEventListener('input', invalidateGeneratedQr);
+form.addEventListener('change', invalidateGeneratedQr);
 logoXInput?.addEventListener('input', clampLogoPositionFields);
 logoYInput?.addEventListener('input', clampLogoPositionFields);
 logoWidthInput?.addEventListener('input', clampLogoPositionFields);
 sizeInput?.addEventListener('input', clampLogoPositionFields);
 runAnalysis();
+
+function invalidateGeneratedQr() {
+    if (saveButton) {
+        saveButton.hidden = true;
+    }
+
+    if (saveStatus) {
+        saveStatus.hidden = true;
+        saveStatus.textContent = '';
+    }
+}
+
+saveButton?.addEventListener('click', async () => {
+    saveStatus.hidden = false;
+    saveStatus.textContent = '';
+
+    if (typeof window.showDirectoryPicker === 'function') {
+        try {
+            const directory = await window.showDirectoryPicker({ mode: 'readwrite' });
+            const svgResponse = await fetch(saveButton.dataset.svg);
+            const svgBlob = await svgResponse.blob();
+            const pngBlob = await rasterizeSvgToPng(svgBlob);
+            const files = [
+                { name: 'generated-qr.png', blob: pngBlob },
+                { name: 'generated-qr.svg', blob: svgBlob },
+            ];
+
+            for (const file of files) {
+                const handle = await directory.getFileHandle(file.name, { create: true });
+                const writable = await handle.createWritable();
+                await writable.write(file.blob);
+                await writable.close();
+            }
+
+            saveStatus.textContent = 'Saved generated-qr.png and generated-qr.svg to the selected folder.';
+            return;
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                saveStatus.hidden = true;
+                return;
+            }
+
+            saveStatus.textContent = 'Could not save both QR files to that folder.';
+            return;
+        }
+    }
+
+    try {
+        const svgResponse = await fetch(saveButton.dataset.svg);
+        const svgBlob = await svgResponse.blob();
+        const pngBlob = await rasterizeSvgToPng(svgBlob);
+        const files = [
+            { name: 'generated-qr.png', blob: pngBlob },
+            { name: 'generated-qr.svg', blob: svgBlob },
+        ];
+
+        for (const file of files) {
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(file.blob);
+            link.href = url;
+            link.download = file.name;
+            document.body.append(link);
+            link.click();
+            link.remove();
+            window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        saveStatus.textContent = 'Download started for generated-qr.png and generated-qr.svg. Choose a folder in your browser’s download settings.';
+    } catch (error) {
+        saveStatus.textContent = 'Could not create the PNG from the styled SVG.';
+    }
+});
+
+async function rasterizeSvgToPng(svgBlob) {
+    const svgUrl = URL.createObjectURL(svgBlob);
+
+    try {
+        const image = new Image();
+        image.src = svgUrl;
+        await image.decode();
+
+        const canvas = document.createElement('canvas');
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+
+        const context = canvas.getContext('2d');
+        if (!context) {
+            throw new Error('Canvas is not available.');
+        }
+
+        context.drawImage(image, 0, 0);
+        return await new Promise((resolve, reject) => {
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    resolve(blob);
+                } else {
+                    reject(new Error('PNG conversion failed.'));
+                }
+            }, 'image/png');
+        });
+    } finally {
+        URL.revokeObjectURL(svgUrl);
+    }
+}
