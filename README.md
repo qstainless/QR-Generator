@@ -1,5 +1,9 @@
 # Walermo QR Code
 
+<!-- COVERAGE BADGE START -->
+![Coverage](https://img.shields.io/badge/coverage-83.40%25-brightgreen)
+<!-- COVERAGE BADGE END -->
+
 [![PHPUnit Tests](https://github.com/qstainless/QR-Generator/actions/workflows/tests.yml/badge.svg)](https://github.com/qstainless/QR-Generator/actions/workflows/tests.yml)
 
 A package-first QR code generator for personal PHP projects, with a gradual shift toward Bacon-backed styling controls.
