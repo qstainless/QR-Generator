@@ -9,3 +9,6 @@
 /build/
 /public/generated/
 /public/info.php
+.claude-flow/neural/stats.json
+.claude-flow/policy/state.json
+ruvector.db
