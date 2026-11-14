@@ -23,7 +23,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, dom, xml, gd
-          coverage: none
+          coverage: ${{ matrix.php == '8.5' && 'xdebug' || 'none' }}
           tools: composer:v2
 
       - name: Install dependencies
@@ -31,3 +31,9 @@ jobs:
 
       - name: Run PHPUnit tests
         run: composer test
+
+      - name: Generate coverage report
+        if: matrix.php == '8.5'
+        env:
+          XDEBUG_MODE: coverage
+        run: vendor/bin/phpunit --coverage-filter src --coverage-clover coverage.xml tests
