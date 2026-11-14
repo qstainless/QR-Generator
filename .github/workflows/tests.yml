@@ -1,5 +1,8 @@
 name: PHPUnit Tests
 
+permissions:
+  contents: read
+
 on:
   push:
   pull_request:
@@ -45,3 +48,80 @@ jobs:
           name: coverage-report
           path: coverage.xml
           retention-days: 30
+
+  coverage-badge:
+    name: Publish Coverage Badge
+    needs: tests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+
+      - name: Generate coverage badge
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          root = ET.parse("coverage/coverage.xml").getroot()
+          metrics = root.find("project/metrics")
+
+          covered = int(metrics.attrib["coveredstatements"])
+          total = int(metrics.attrib["statements"])
+          percentage = round(covered / total * 100, 2) if total else 0
+
+          color = (
+              "brightgreen" if percentage >= 80
+              else "yellow" if percentage >= 60
+              else "red"
+          )
+
+          badge = (
+              f"https://img.shields.io/badge/"
+              f"coverage-{percentage:.2f}%25-{color}"
+          )
+
+          readme = Path("README.md")
+          content = readme.read_text()
+          
+          start = "<!-- COVERAGE BADGE START -->"
+          end = "<!-- COVERAGE BADGE END -->"
+          
+          badge_block = f"{start}\n![Coverage]({badge})\n{end}"
+        
+          if start in content and end in content:
+            before = content.split(start)[0]
+            after = content.split(end, 1)[1]
+            content = before + badge_block + after
+          else:
+            lines = content.splitlines()
+            lines.insert(1, "\n" + badge_block)
+            content = "\n".join(lines) + "\n"
+            
+            readme.write_text(content)
+
+          print(f"Line coverage: {percentage:.2f}%")
+          PY
+
+      - name: Publish coverage badge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add README.md
+
+          if ! git diff --cached --quiet; then
+            git commit -m "ci: update coverage badge [skip ci]"
+            git push
+          fi
