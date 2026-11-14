@@ -37,3 +37,11 @@ jobs:
         env:
           XDEBUG_MODE: coverage
         run: vendor/bin/phpunit --coverage-filter src --coverage-clover coverage.xml tests
+
+      - name: Upload coverage report
+        if: matrix.php == '8.5'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+          retention-days: 30
