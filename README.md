@@ -89,3 +89,13 @@ composer test
 - `src/`: package source
 - `tests/`: package tests
 - `public/`: optional local playground, not part of the package API
+
+## Development & AI Attribution
+
+This project was conceived, designed, and directed by its maintainer to address limitations encountered with existing QR code generation services, particularly paid feature restrictions and reliance on third-party redirects.
+
+Development was assisted by OpenAI Codex and ChatGPT, including code generation, implementation, debugging, and exploration of technical approaches and library capabilities.
+
+The project's objectives, requirements, technical direction, and final decisions were established and controlled by its maintainer. AI tools served as development assistants rather than independent project authors.
+
+AI-assisted contributions were subject to human review and acceptance, and responsibility for the resulting software remains with the maintainer.
