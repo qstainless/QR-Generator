@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.3', '8.4', '8.5']
+        php: [ '8.3', '8.4', '8.5' ]
 
     steps:
       - name: Checkout repository
@@ -94,21 +94,27 @@ jobs:
 
           readme = Path("README.md")
           content = readme.read_text()
-          
+
           start = "<!-- COVERAGE BADGE START -->"
           end = "<!-- COVERAGE BADGE END -->"
-          
-          badge_block = f"{start}\n![Coverage]({badge})\n{end}"
-        
+
+          tests_badge = (
+            "[![PHPUnit Tests]"
+            "(https://github.com/qstainless/QR-Generator/actions/workflows/tests.yml/badge.svg)]"
+            "(https://github.com/qstainless/QR-Generator/actions/workflows/tests.yml)"
+          )
+
+          badge_block = f"{start}\n{tests_badge} ![Coverage]({badge})\n{end}"
+
           if start in content and end in content:
             before = content.split(start)[0]
             after = content.split(end, 1)[1]
             content = before + badge_block + after
           else:
             lines = content.splitlines()
-            lines.insert(1, "\n" + badge_block)
+            lines.insert(3, badge_block)
             content = "\n".join(lines) + "\n"
-            
+
             readme.write_text(content)
 
           print(f"Line coverage: {percentage:.2f}%")
