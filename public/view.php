@@ -59,8 +59,16 @@
                 </section>
 
                 <section class="tab-panel <?= $form['active_tab'] === 'layout' ? 'active' : '' ?>" data-panel="layout">
-                    <div class="pill">Error correction: High</div>
                     <div class="grid">
+                        <label>
+                            Error correction
+                            <select name="error_correction" id="error_correction">
+                                <option value="low" <?= $form['error_correction'] === 'low' ? 'selected' : '' ?>>Low (7%)</option>
+                                <option value="medium" <?= $form['error_correction'] === 'medium' ? 'selected' : '' ?>>Medium (15%)</option>
+                                <option value="quartile" <?= $form['error_correction'] === 'quartile' ? 'selected' : '' ?>>Quartile (25%)</option>
+                                <option value="high" <?= $form['error_correction'] === 'high' ? 'selected' : '' ?>>High (30%)</option>
+                            </select>
+                        </label>
                         <label>
                             Size
                             <input type="number" name="size" id="size" min="50" max="2400" value="<?= htmlspecialchars($form['size'], ENT_QUOTES, 'UTF-8') ?>">
@@ -70,7 +78,7 @@
                             <input type="number" name="margin" id="margin" min="0" max="200" value="<?= htmlspecialchars($form['margin'], ENT_QUOTES, 'UTF-8') ?>">
                         </label>
                     </div>
-                    <p class="hint">Size is the real density control here. Margin adds quiet zone outside the QR body, which is still useful but less structurally risky.</p>
+                    <p class="hint">Error correction adds redundancy so a damaged code can still scan, but higher levels can make codes harder for some readers to decode. Size controls density; margin adds a quiet zone outside the QR body.</p>
                 </section>
 
                 <section class="tab-panel <?= $form['active_tab'] === 'logo' ? 'active' : '' ?>" data-panel="logo">

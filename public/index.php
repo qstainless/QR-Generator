@@ -79,7 +79,7 @@ function getFormState(array $source): array
         'data'                  => $source['data'] ?? 'https://example.com',
         'size'                  => (string) ($source['size'] ?? '300'),
         'margin'                => (string) ($source['margin'] ?? '10'),
-        'error_correction'      => 'high',
+        'error_correction'      => ErrorCorrectionLevel::tryFrom((string) ($source['error_correction'] ?? 'high'))?->value ?? 'high',
         'foreground'            => $source['foreground'] ?? '#000000',
         'background'            => $source['background'] ?? '#ffffff',
         'eye_outer'             => $source['eye_outer'] ?? '',
@@ -116,7 +116,7 @@ function analyzeConfiguration(array $form): array
     $logoPath  = trim((string) $form['logo_path']);
     $logoWidth = max(1, (int) $form['logo_width']);
 
-    $matrixData         = getMatrixData($data, $size, $margin);
+    $matrixData         = getMatrixData($data, $size, $margin, (string) $form['error_correction']);
     $minimumSize        = findMinimumSize($data, $form, $margin);
     $validationSafe     = isValidationMemorySafe($size, $margin);
     $currentLayoutValid = isLayoutValid($data, $form, $size, $margin);
@@ -128,7 +128,7 @@ function analyzeConfiguration(array $form): array
         )
         : ($currentLayoutValid
             ? 'This payload validates at the current size and margin.'
-            : 'Increase the size or reduce the margin until the validator can read the code reliably.');
+            : 'Increase the size, reduce the margin, or change the error correction level until the validator can read the code reliably.');
 
     $logo = [
         'path_ready'    => $logoPath !== '' && is_file($logoPath),
@@ -174,9 +174,14 @@ function analyzeConfiguration(array $form): array
     ];
 }
 
-function getMatrixData(string $data, int $size, int $margin): array
+function getMatrixData(string $data, int $size, int $margin, string $errorCorrection): array
 {
-    $baconQr     = BaconEncoder::encode($data, BaconErrorCorrectionLevel::H(), 'UTF-8');
+    $baconQr     = BaconEncoder::encode($data, match ($errorCorrection) {
+        'low'      => BaconErrorCorrectionLevel::L(),
+        'medium'   => BaconErrorCorrectionLevel::M(),
+        'quartile' => BaconErrorCorrectionLevel::Q(),
+        default    => BaconErrorCorrectionLevel::H(),
+    }, 'UTF-8');
     $version     = $baconQr->getVersion()->getVersionNumber();
     $moduleCount = $baconQr->getVersion()->getDimensionForVersion();
 
@@ -198,7 +203,7 @@ function createOptionsFromForm(
     $options = (new QrCodeOptions())
         ->withSize($sizeOverride ?? max(1, (int) $form['size']))
         ->withMargin($marginOverride ?? max(0, (int) $form['margin']))
-        ->withErrorCorrectionLevel(ErrorCorrectionLevel::High)
+        ->withErrorCorrectionLevel(ErrorCorrectionLevel::from((string) $form['error_correction']))
         ->withForegroundColor(hexToColor((string) $form['foreground']))
         ->withBackgroundColor(hexToColor((string) $form['background']))
         ->withEyeOuterColor(parseOptionalHexColor((string) $form['eye_outer']))
